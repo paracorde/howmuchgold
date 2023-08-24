@@ -1,0 +1,51 @@
+*{
+    font-family: monospace;
+}
+
+#page {
+    padding: 0 3em 0 3em;
+    font-family: monospace;
+}
+
+#taken_grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+}
+
+.constraint_div {
+    display: grid;
+    grid-template-columns: 2fr 3fr 3fr 1fr;
+}
+
+#results, #sim {
+    margin-top: 10px;
+}
+
+input[type=number]{
+    padding: 2px;
+    margin: 4px;
+}
+
+.one{
+    color: rgb(80, 80, 80);
+}
+
+.two{
+    color: rgb(23, 131, 20);
+}
+
+.three{
+    color: rgb(32, 152, 233);
+}
+
+.four{
+    color: rgb(109, 32, 233);
+}
+
+.five{
+    color: rgb(233, 169, 32);
+}
+
+#taken_grid div{
+    margin-top: 15px;
+}

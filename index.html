@@ -1,8 +1,38 @@
 <html>
   <head>
-    
+    <script src="index.js"></script>
+    <link rel="stylesheet" href="index.css"/>
   </head>
   <body>
-    <h1>,</h1>
+    <div id="page">
+      <h1>how much gold?</h1>
+      <div id="level_info">
+        level <input id="level" type="number" value="1" min="1" max="10"/>
+        exp <input id="exp" type="number" value="0" min="0" max="100"/>
+        cutting corners <input id="ccorners" type="checkbox"/>
+        level up <input id="levelup" type="checkbox"/>
+      </div>
+      <div id="taken_grid">
+        <div>type</div>
+        <div>total out of pool</div>
+        <div class="one">1 cost</div>
+        <input class="taken" type="number" value="0"  min="0" max=""/>
+        <div class="two">2 cost</div>
+        <input class="taken" type="number" value="0"  min="0" max=""/>
+        <div class="three">3 cost</div>
+        <input class="taken" type="number" value="0"  min="0" max=""/>
+        <div class="four">4 cost</div>
+        <input class="taken" type="number" value="0"  min="0" max=""/>
+        <div class="five">5 cost</div>
+        <input class="taken" type="number" value="0"  min="0" max=""/>
+      </div>
+      <div id="constraints_grid">
+      </div>
+      <div id="results"></div>
+      <div id="sim">
+        <button onclick="window.add_constraint()">add constraint</button>
+        <button onclick="window.simulate()">run simulation</button>
+      </div>
+    </div>
   </body>
 </html>
