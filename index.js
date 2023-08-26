@@ -105,7 +105,7 @@ function sim_once(sodds, wanted, taken){
 function calc(level, wanted, taken){
     let golds = [];
     let total_total_gold = 0;
-    const iterations = 1000;
+    const iterations = 5000;
     for (let i = 0; i < iterations; i++){
         let x = sim_once(shop_odds[level], wanted, taken);
         total_total_gold += x;
@@ -113,8 +113,8 @@ function calc(level, wanted, taken){
         if (total_total_gold == Infinity) return Infinity;
     }
     golds.sort(function(a, b){return a-b;});
-    if (iterations%2 == 0) return golds[~~(iterations/2)];
-    return (golds[~~(iterations/2)]+golds[~~(iterations/2)+1])/2;
+    if (iterations%2 == 0) return (golds[~~(iterations/2)]+golds[~~(iterations/2)+1])/2;
+    return golds[~~(iterations/2)];
     // return golds[iterations/2];
 }
 
