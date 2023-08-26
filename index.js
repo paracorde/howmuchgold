@@ -63,7 +63,6 @@ function roll_unit(cost, wanted, pool){
 function sim_once(sodds, wanted, taken){
     let total_wanted = 0;
     let wanted_by_cost = [0, 0, 0, 0, 0];
-    let contested_by_cost = [0, 0, 0, 0, 0];
     let copies_by_cost = [0, 0, 0, 0, 0];
     for (let i = 0; i < 5; i++){
         if (wanted[i].length > 0 && sodds.length <= i){
@@ -78,7 +77,6 @@ function sim_once(sodds, wanted, taken){
             local_wanted[c].push({...w});
             total_wanted += w.wanted;
             wanted_by_cost[c] += w.wanted;
-            contested_by_cost[c] += w.contested;
             copies_by_cost[c] += copies_by_tier[c];
         }
     }
@@ -105,13 +103,19 @@ function sim_once(sodds, wanted, taken){
 }
 
 function calc(level, wanted, taken){
+    let golds = [];
     let total_total_gold = 0;
     const iterations = 1000;
     for (let i = 0; i < iterations; i++){
-        total_total_gold += sim_once(shop_odds[level], wanted, taken);
-        if (total_total_gold == Infinity) return [Infinity, 0];
+        let x = sim_once(shop_odds[level], wanted, taken);
+        total_total_gold += x;
+        golds.push(x);
+        if (total_total_gold == Infinity) return Infinity;
     }
-    return [total_total_gold, iterations];
+    golds.sort(function(a, b){return a-b;});
+    if (iterations%2 == 0) return golds[~~(iterations/2)];
+    return (golds[~~(iterations/2)]+golds[~~(iterations/2)+1])/2;
+    // return golds[iterations/2];
 }
 
 function wrap_and_setup(input_field, input_type){ // https://stackoverflow.com/a/18453767
@@ -128,7 +132,6 @@ function wrap_and_setup(input_field, input_type){ // https://stackoverflow.com/a
     }
     wrapper = document.createElement("div");
     wrapper.appendChild(document.createTextNode(input_type+":"));
-    // input_field.parentNode.insertBefore(wrapper, input_field);
     wrapper.appendChild(input_field);
     return wrapper;
 }
@@ -205,16 +208,16 @@ window.simulate = function(){
         return;
     }
 
-    let [g1, it1] = calc(level, wanted, taken);
-    if (g1 == Infinity){
+    let r1 = calc(level, wanted, taken);
+    if (r1 == Infinity){
         document.getElementById("results").innerHTML = results + "Impossible to hit at this level.";
         return;
     }
-    results += "Rolling at level " + (level+1) + ": avg. <b>" + (g1/it1) + "</b> gold<br>";
+    results += "Rolling at level " + (level+1) + ": med. <b>" + r1 + "</b> gold<br>";
     
     if (level < 8 || ((level < 9) && (levelup || ccorners))){
-        let [g2, it2] = calc(level+1, wanted, taken);
-        results += "Going " + (level+2) + " to roll: avg. " + (g2/it2) + "+" + gold_to_level + "=<b>" + ((g2/it2)+gold_to_level) + "</b> gold<br>"; 
+        let r2 = calc(level+1, wanted, taken);
+        results += "Going " + (level+2) + " to roll: med. " + r2 + "+" + gold_to_level + "=<b>" + (r2+gold_to_level) + "</b> gold<br>"; 
     }
 
     document.getElementById("results").innerHTML = results;
